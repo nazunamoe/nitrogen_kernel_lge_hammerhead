@@ -28,9 +28,6 @@
 #include "audio_acdb.h"
 #include "q6voice.h"
 
-#ifdef CONFIG_TOUCHSCREEN_DOUBLETAP2WAKE
-#include <linux/input/doubletap2wake.h>
-#endif
 
 #define TIMEOUT_MS 500
 
@@ -42,10 +39,6 @@
 #define CVP_CAL_SIZE 245760
 /* CVS CAL Size: 49152 = 48 * 1024 */
 #define CVS_CAL_SIZE 49152
-
-#ifdef CONFIG_TOUCHSCREEN_DOUBLETAP2WAKE
-bool in_phone_call = false;
-#endif
 
 enum {
 	VOC_TOKEN_NONE,
@@ -4542,9 +4535,6 @@ int voc_end_voice_call(uint32_t session_id)
 
 		v->voc_state = VOC_RELEASE;
 	}
-	#ifdef CONFIG_TOUCHSCREEN_DOUBLETAP2WAKE
-	in_phone_call = false;
-	#endif
 	mutex_unlock(&v->lock);
 	return ret;
 }
@@ -4751,9 +4741,6 @@ int voc_start_voice_call(uint32_t session_id)
 		ret = -EINVAL;
 		goto fail;
 	}
-	#ifdef CONFIG_TOUCHSCREEN_DOUBLETAP2WAKE
-	in_phone_call = true;
-	#endif
 fail:
 	mutex_unlock(&v->lock);
 	return ret;
